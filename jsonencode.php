@@ -114,6 +114,13 @@ $arr = array (
             
         )
     ),
+    array (
+        'name' => 'submit',
+        'submit' => array (
+            'prime' => 'Отправить',
+            'link' => 'Отменить',
+        ),
+    ),
 );
 
 $jsonData = json_encode($arr, JSON_UNESCAPED_UNICODE);

@@ -222,6 +222,16 @@ $AddFields = [];
                             ?>
                         </div>
 
+                <?php } elseif ($value['name'] == 'submit') { ?>
+                     <div class="feed-buttons-block" id="feed-add-buttons-blockblogPostForm">
+                        <?php foreach ($value['submit'] as $k => $v){
+                            if ($k == 'prime') { ?>
+                                <button type="submit" class="ui-btn ui-btn-lg ui-btn-primary"><?=$v?></button>
+                          <?php } else { ?>
+                            <button type="submit" class="ui-btn ui-btn-lg ui-btn-link"><?=$v?></button>
+                        <?php } ?>
+                    <?php } ?>
+                    </div>
                 <?php } ?>
             <?php } ?>
         </form>
