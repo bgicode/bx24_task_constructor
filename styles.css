@@ -93,11 +93,14 @@ input, select {
     height: auto;
     opacity: 1;
     margin-top: 11px;
+    
 }
 
 .task-options-sheduling-block {
     position: relative;
     transition: all .3s linear;
+    overflow: hidden;
+    margin-left: 135px 
 }
 
 .task-info-panel-important input {

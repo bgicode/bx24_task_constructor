@@ -111,10 +111,3 @@ $arStructur = [
         ],
     ],
 ];
-
-$jsonData = json_encode($arStructur, JSON_UNESCAPED_UNICODE);
-
-$filenameJson = __DIR__ . '/data.json';
-
-file_put_contents($filenameJson, $jsonData);
-?>

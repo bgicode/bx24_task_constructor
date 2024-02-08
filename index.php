@@ -1,4 +1,6 @@
 <?php
+include_once(__DIR__."/arStructur.php");
+include_once(__DIR__."/layoutStructur.php");
 if(isset($_GET["pattern"])){
     if ($_GET["pattern"] == 'JSON') {
         $file = file_get_contents('./data.json');
@@ -7,147 +9,108 @@ if(isset($_GET["pattern"])){
         $file = file_get_contents('./array.txt');
         $array = unserialize($file);
     }
+} else {
+    $array = $arStructur;
 }
-$AddFields = [];
-?>
 
-<?php function blockWithAdditionalFields($value) {
-    global $AddFields; ?>
-    <div class="task-options-item task-options-item-destination">
-    
-        <?php foreach ($value as $key => $v) { ?>
-            <?php if(is_array($v)) { 
+$AddFields = [];
+
+
+function blockWithAdditionalFields($value, $arLayoutStruct) {
+    global $AddFields;
+    echo $arLayoutStruct['block_with_additional_fields']['layout_wpar'];
+
+         foreach ($value as $key => $v) { 
+             if(is_array($v)) { 
                 if ($key == 0){
                     $v = $value;
-                }?>
+                }
 
-                <?php foreach ($v as $v2) { ?>
-                    <span class="task-options-item-param"><?=$v2['typical_field']['title'];?></span>
-                    <div class="task-options-item-open-inner">
-                        <!-- typical input -->
-                        <div class="tasks task-form-field inline t-filled tdp-mem-sel-is-empty-false t-min tdp-mem-sel-is-min">
-                            <?php if (strlen($v2['typical_field']['typical_input']['selected']) > 0){ ?>
-                                <!-- selected -->
-                                <span class="js-id-tdp-mem-sel-is-items tasks-h-invisible">
-                                    <span class="js-id-tdp-mem-sel-is-item js-id-tdp-mem-sel-is-item-U1 task-form-field-item">
-                                        <a class="task-form-field-item-text task-options-destination-text" href="#">
-                                        <?=$v2['typical_field']['typical_input']['selected'];?>
-                                        </a>
-                                        <span class="js-id-tdp-mem-sel-is-item-delete task-form-field-item-delete" title="Отменить выбор"></span>
-                                    </span>
-                                </span>
-                                
-                                <!-- selected -->
-                            <?php } ?>
+                foreach ($v as $v2) { 
+                    echo $arLayoutStruct['block_with_additional_fields']['typical_field_title']($v2['typical_field']['title']);
 
-                            <?php if (strlen($v2['typical_field']['typical_input']['action']) > 0){ ?>
-                                <!-- action -->
-                                <span class="task-form-field-controls">
-                                    <a class="js-id-tdp-mem-sel-is-control task-form-field-when-filled task-form-field-link add"><?=$v2['typical_field']['typical_input']['action'];?></a>
-                                </span>
-                                <!-- action -->
-                            <?php } ?> 
-                            
-                        </div>
-                        <!-- typical input -->
-                        <?php if($v2['typical_field']['additional_fields_buttons'] !== NULL) { ?>
-                            <?php if (count($v2['typical_field']['additional_fields_buttons']) > 0){ ?>
-                                <span class="task-dashed-link task-dashed-link-add tasks-additional-block-link inline">
-                                <?php foreach($v2['typical_field']['additional_fields_buttons'] as $k2 => $v3){
-                                    $AddFields[] = $v3 ?>
-                                    <!-- additional fields buttons -->
-                                        <span class="task-dashed-link-inner"><?=$v3['typical_field']['title']?></span>
-                                    <!-- additional fields buttons -->
-                                    <?php } ?>
-                                    </span>
-                            <?php } ?>
-                        <?php } ?>
-                    </div>
-                <?php } ?>
-            <?php } ?>
-        <?php } ?> 
-    </div>
-<?php
-} ?>
+                    echo $arLayoutStruct['block_with_additional_fields']['typical_field_wrap'];
+                    
+                        echo $arLayoutStruct['block_with_additional_fields']['inputs_wrap'];
+                        // typical input
+                            if (strlen($v2['typical_field']['typical_input']['selected']) > 0){ 
+                                //selected
+                                echo $arLayoutStruct['block_with_additional_fields']['selected_layout']($v2['typical_field']['typical_input']['selected']);
+                            }
 
+                            if (strlen($v2['typical_field']['typical_input']['action']) > 0){ 
+                                // action
+                                echo $arLayoutStruct['block_with_additional_fields']['action_layout']($v2['typical_field']['typical_input']['action']);
+                             } 
+                        echo '</div>';
+                        // typical input
 
-<?php function blockWithDateFields($value) { 
-    global $AddFields; ?>
-    <?php foreach ($value as $v) { ?>
-            <?php if(is_array($v)) {
-                 
-                if ($v['title'] !== NULL){ ?>
-                    <div class="pinable-block task-openable-block">
-                        <?php 
-                        if(isset($v['title']))
-                        {
-                            unset($v['title']);
+                        if($v2['typical_field']['additional_fields_buttons'] !== NULL) {
+                            if (count($v2['typical_field']['additional_fields_buttons']) > 0){
+                                echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_wrap']; 
+
+                                foreach($v2['typical_field']['additional_fields_buttons'] as $v3){
+                                    $AddFields[] = $v3; 
+                                    echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_layout']($v3['typical_field']['title']);
+                                }
+                                echo '</span>';
+                            }
                         }
-                        ?>
-                        <?php foreach ($v as $v2) {
-                            if($v2['type'] == 'date') { ?>
-                                <div class="task-options-field task-options-field-left">
-                                    <label for="" class="task-field-label task-field-label-br"><?=$v2['lable'];?></label>
-                                    <span class="task-options-inp-container task-options-date t-empty">
-                                        <input type="date" class="task-options-inp" value="" placeholder=" ">
-                                    </span>
-                                    <div class="tasks-disabling-overlay-form" title="Сроки вычисляются автоматически"></div>
-                                </div>
-                            <?php } elseif ($v2['type'] == 'text') { ?>
-                                        <div class="task-options-field task-options-field-left task-options-field-duration">
-                                            <label for="" class="task-field-label task-field-label-br"><?=$v2['lable'];?></label>
-                                            <span class="task-options-inp-container">
-                                                <input data-bx-id="dateplanmanager-duration" type="text" class="task-options-inp" value="">
-                                            </span>
-                                            <span class="task-dashed-link">
-                                                <span class="task-dashed-link-inner"><?=$v2['days'];?></span><span class="task-dashed-link-inner"><?=$v2['hours'];?></span><span class="task-dashed-link-inner"><?=$v2['minuts'];?></span>
-                                                <input data-bx-id="dateplanmanager-duration-type-value" type="hidden" name="ACTION[0][ARGUMENTS][data][DURATION_TYPE]" value="days">
-                                            </span>
-                                            <div class="tasks-disabling-overlay-form" title="Сроки вычисляются автоматически"></div>
-                                        </div>
-                            <?php } elseif ($v2['type'] == 'checkbox') { ?>
-                                        <div class="task-options-field-inner">
-                                            <label class="task-field-label check" data-hint-enabled="" data-hint-text="">
-                                                <span class="js-id-hint-help task-options-help tasks-icon-help tasks-help-cursor" title="<?=$v2['help'];?>"></span>
-                                                <input data-target="allow-change-deadline" data-flag-name="ALLOW_CHANGE_DEADLINE" data-yes-value="Y" data-no-value="N" checked="" class="js-id-wg-optbar-flag js-id-wg-optbar-flag-allow-change-deadline task-field-checkbox" type="checkbox"><?=$v2['lable'];?>
-                                            </label>
-                                            <input class="js-id-wg-optbar-allow-change-deadline" type="hidden" name="ACTION[0][ARGUMENTS][data][ALLOW_CHANGE_DEADLINE]" value="Y">  
-                                        </div>
-                            <?php } ?>
-                        <?php } ?>
-                    </div>
-                <?php } else { ?>
+                    echo '</div>';
+                }
+            }
+        }
+    echo '</div>';
+};
 
-                    <?php foreach ($v as $v2) { 
-                        ?>
-                        <span class="task-options-item-param"><?=$v2['title'];?></span>
-                        <div class="task-options-item-more">
-                            <span class="task-options-destination-wrap date">
-                                <span data-bx-id="dateplanmanager-deadline" class="task-options-inp-container task-options-date t-empty">
-                                    <input type="date" class="task-options-inp" value="" placeholder=" ">
-                                </span>
-                            </span>
+function blockWithDateFields($value, $arLayoutStruct) { 
+    global $AddFields;
+    foreach ($value as $v) {
+        if(is_array($v)) {
+                
+            if ($v['title'] !== NULL){
 
-                            <span class="task-dashed-link task-dashed-link-add tasks-additional-block-link inline">
-                                <?php if($v2['additional_fields_buttons'] !== NULL) { ?>
-                                    <?php if (count($v2['additional_fields_buttons']) > 0){ ?>
-                                        
-                                        <?php foreach($v2['additional_fields_buttons'] as $k2 => $v3){
-                                            $AddFields[] = $v3 ?>
-                                            <!-- additional fields buttons -->
-                                                <span class="task-dashed-link-inner"><?=$v3['title']?></span>
-                                            <!-- additional fields buttons -->
-                                        <?php } ?>
-                                    <?php } ?>
-                                <?php } ?>
-                            </span>
-                        </div>
-                    <?php } ?>
-                <?php } ?>
-             <?php } ?>
-        <?php } ?>
-<?php
-} ?>
+                if(isset($v['title']))
+                {
+                    unset($v['title']);
+                }
+
+                foreach ($v as $v2) {
+                    if($v2['type'] == 'date') { 
+                        echo $arLayoutStruct['block_with_date_fields']['date_field_layout']($v2['lable']);
+                    } elseif ($v2['type'] == 'text') { 
+                        echo $arLayoutStruct['block_with_date_fields']['text_field_layout']($v2);
+
+                    } elseif ($v2['type'] == 'checkbox') { 
+                        echo $arLayoutStruct['block_with_date_fields']['checkbox_field_layout']($v2);
+                    }
+                }
+            } else {
+
+                foreach ($v as $v2) { 
+                    echo $arLayoutStruct['block_with_date_fields']['block_with_date_fields_title']($v2);
+                    
+                    echo $arLayoutStruct['block_with_date_fields']['main_input_wrap'];
+
+                    if($v2['additional_fields_buttons'] !== NULL) {
+                        if (count($v2['additional_fields_buttons']) > 0){
+                            echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_wrap'];
+
+                            foreach($v2['additional_fields_buttons'] as $v3){
+                                $AddFields[] = $v3; 
+                                echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_layout']($v3['title']);
+                            }
+                            echo '</span>';
+                        }
+                    }
+                    echo '</div>'; 
+                } 
+            } 
+        } 
+    } 
+
+}
+?>
 
 <!DOCTYPE HTML>
 <html lang="en">
@@ -161,79 +124,55 @@ $AddFields = [];
         <form action="">
             <?php
             foreach ($array as $key => $value) {
-                if ($value['name'] == 'main') { ?>
+                if ($value['type'] == 'main') {                    
+                    echo $arLayoutStruct[$value['type']]['layout_wpar'];
+                    foreach ($value['main']['cheboxes'] as $k => $v) { 
+                        echo $arLayoutStruct['main']['layout_checkbox']($v, $k); 
+                    }
+                    echo $arLayoutStruct['main']['layout_body']($value['main']['title']);
+                    echo '</div>';
+                } elseif ($value['type'] == 'textarea') { 
+                    echo $arLayoutStruct['textarea']['layout_body'];
+                } elseif ($value['type'] == 'toolbar') { 
+                    echo $arLayoutStruct[$value['type']]['layout_wpar'];                    
+                    foreach($value['toolbar'] as $k => $v) { 
+                        echo $arLayoutStruct['toolbar']['layout_body']($v, $k);
+                    } 
+                    echo '</div>';
+                } elseif ($value['type'] == 'block_with_additional_fields') {
 
-                    <div class="task-info-panel">
-                        <?php 
-                        foreach ($value['main']['cheboxes'] as $k => $v) { ?>
-                            <div class="task-info-panel-important">
-                            <input  type="checkbox" id="<?=$k?>">
-                            <label for="<?=$k?>"><?=$v?></label>
-                            <input type="hidden" name="ACTION[0][ARGUMENTS][data][PRIORITY]" value="1">
-                            </div>
-                        <?php } ?>
+                    blockWithAdditionalFields($value, $arLayoutStruct);
+                    foreach ($AddFields as $r) {
+                        $s[0] = $r;
+                        blockWithAdditionalFields($s, $arLayoutStruct);
+                    } 
+                    $AddFields = [];
 
-                        <div class="task-info-panel-title">
-                            <input data-bx-id="task-edit-title" type="text" name="ACTION[0][ARGUMENTS][data][TITLE]" value="" placeholder="<?=$value['main']['title'];?>">
-                        </div>
-                    </div>
+                } elseif ($value['type'] == 'block_with_date_fields') { 
+                    echo $arLayoutStruct['block_with_date_fields']['block_with_date_fields_wrap'];
 
-                <?php } elseif ($value['name'] == 'textarea') { ?>
-                    
-                    <div class="task-text-area">
-                        <textarea class="task-text-area-text" name="#" value="" ></textarea>
-                    </div>
-                <?php } elseif ($value['name'] == 'toolbar') { ?>
-                    <div class="post-form-toolbar">
-                        <?php foreach($value['toolbar'] as $k => $v) { ?>
-                            <div class="main-post-form-toolbar-button">
-                                <div class="tolbar-img bx-b-<?=$k;?>-task-form"></div>
-                                <span class="main-post-form-toolbar-button-copilot"><?=$v;?></span>
-                            </div>
-                        <?php } ?>
-                    </div>
-                    
-                <?php } elseif ($value['name'] == 'block_with_additional_fields') {?>
+                        blockWithDateFields($value, $arLayoutStruct); 
+                        foreach ($AddFields as $r) {
+                            $s[0] = $r; 
+                            echo $arLayoutStruct['block_with_date_fields']['add_date_blocks_wrap'];
+                                blockWithDateFields($s, $arLayoutStruct); 
+                            echo '</div>';
+                        }
+                        $AddFields = []; 
+                    echo '</div>';
 
-                        <div>
-                            <?php
-                                blockWithAdditionalFields($value);
-                                foreach ($AddFields as $r) {
-                                    $s[0] = $r; ?>
-                                    <?php blockWithAdditionalFields($s); ?>
-                                <?php } 
-                                $AddFields = [];
-                            ?>
-                        </div>
-
-                    <?php } elseif ($value['name'] == 'block_with_date_fields') { ?>
-
-                        <div  class="mode-unit-selected-days task-options-item task-options-item-open">
-                            <?php 
-                            blockWithDateFields($value); 
-                            foreach ($AddFields as $r) {
-                                $s[0] = $r; ?>
-                                <div class="task-options-sheduling-block">
-                                    <div class="task-options-divider"></div>
-                                    <?php blockWithDateFields($s); ?>
-                                </div>
-                            <?php }
-                            $AddFields = []; 
-                            ?>
-                        </div>
-
-                <?php } elseif ($value['name'] == 'submit') { ?>
-                     <div class="feed-buttons-block" id="feed-add-buttons-blockblogPostForm">
-                        <?php foreach ($value['submit'] as $k => $v){
-                            if ($k == 'prime') { ?>
-                                <button type="submit" class="ui-btn ui-btn-lg ui-btn-primary"><?=$v?></button>
-                          <?php } else { ?>
-                            <button type="submit" class="ui-btn ui-btn-lg ui-btn-link"><?=$v?></button>
-                        <?php } ?>
-                    <?php } ?>
-                    </div>
-                <?php } ?>
-            <?php } ?>
+                } elseif ($value['type'] == 'submit') { 
+                    echo $arLayoutStruct['submits']['layout_wpar'];
+                        foreach ($value['submit'] as $k => $v){
+                            if ($k == 'prime') { 
+                                echo $arLayoutStruct['submits']['prime']($v);
+                            } else { 
+                                echo $arLayoutStruct['submits']['other']($v);
+                            }
+                        }
+                    echo '</div>';
+                }
+            } ?>
         </form>
     </div>
 </body>

@@ -2,7 +2,7 @@
 
 $arr = array (
     array(
-        'name' => 'main',
+        'type' => 'main',
         'main' => array (
         'cheboxes' => array (
             'important' => 'Это важная задача',
@@ -12,10 +12,10 @@ $arr = array (
         )
     ),
     array(
-        'name' => 'textarea',
+        'type' => 'textarea',
     ),
     array (
-        'name' => 'toolbar',
+        'type' => 'toolbar',
         'toolbar' => array (
             'CoPilot' => 'CoPilot',
             'uploadfile' => 'Файл',
@@ -23,7 +23,7 @@ $arr = array (
     ),
 
     array (
-        'name' => 'block_with_additional_fields',
+        'type' => 'block_with_additional_fields',
         'block_with_additional_fields' => array (
             array (
                 'typical_field' => array (
@@ -60,7 +60,7 @@ $arr = array (
     ),
 
     array (
-        'name' => 'block_with_date_fields',
+        'type' => 'block_with_date_fields',
         'block_with_additional_fields' => array (
             array ( 
                     'type' => 'date',
