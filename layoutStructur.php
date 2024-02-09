@@ -1,6 +1,5 @@
 <?php
 $arLayoutStruct = [
-
     'main' => [
         'layout_wpar' => '<div class="task-info-panel">',
         'layout_checkbox' => fn($v, $k) => "<div class='task-info-panel-important'>

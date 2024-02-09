@@ -1,7 +1,8 @@
 <?php
 include_once(__DIR__."/arStructur.php");
 include_once(__DIR__."/layoutStructur.php");
-if(isset($_GET["pattern"])){
+
+if (isset($_GET["pattern"])) {
     if ($_GET["pattern"] == 'JSON') {
         $file = file_get_contents('./data.json');
         $array = json_decode($file, true);
@@ -15,8 +16,7 @@ if(isset($_GET["pattern"])){
 
 $AddFields = [];
 
-
-function blockWithAdditionalFields($value, $arLayoutStruct) {
+function BlockWithAdditionalFields($value, $arLayoutStruct) {
     global $AddFields;
     echo $arLayoutStruct['block_with_additional_fields']['layout_wpar'];
 
@@ -33,23 +33,23 @@ function blockWithAdditionalFields($value, $arLayoutStruct) {
                     
                         echo $arLayoutStruct['block_with_additional_fields']['inputs_wrap'];
                         // typical input
-                            if (strlen($v2['typical_field']['typical_input']['selected']) > 0){ 
+                            if (strlen($v2['typical_field']['typical_input']['selected']) > 0) {
                                 //selected
                                 echo $arLayoutStruct['block_with_additional_fields']['selected_layout']($v2['typical_field']['typical_input']['selected']);
                             }
 
-                            if (strlen($v2['typical_field']['typical_input']['action']) > 0){ 
+                            if (strlen($v2['typical_field']['typical_input']['action']) > 0) { 
                                 // action
                                 echo $arLayoutStruct['block_with_additional_fields']['action_layout']($v2['typical_field']['typical_input']['action']);
                              } 
                         echo '</div>';
                         // typical input
-
-                        if($v2['typical_field']['additional_fields_buttons'] !== NULL) {
-                            if (count($v2['typical_field']['additional_fields_buttons']) > 0){
+                        // add fields
+                        if ($v2['typical_field']['additional_fields_buttons'] !== NULL) {
+                            if (count($v2['typical_field']['additional_fields_buttons']) > 0) {
                                 echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_wrap']; 
 
-                                foreach($v2['typical_field']['additional_fields_buttons'] as $v3){
+                                foreach ($v2['typical_field']['additional_fields_buttons'] as $v3) {
                                     $AddFields[] = $v3; 
                                     echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_layout']($v3['typical_field']['title']);
                                 }
@@ -63,12 +63,12 @@ function blockWithAdditionalFields($value, $arLayoutStruct) {
     echo '</div>';
 };
 
-function blockWithDateFields($value, $arLayoutStruct) { 
+function BlockWithDateFields($value, $arLayoutStruct) { 
     global $AddFields;
     foreach ($value as $v) {
         if(is_array($v)) {
                 
-            if ($v['title'] !== NULL){
+            if ($v['title'] !== NULL) {
 
                 if(isset($v['title']))
                 {
@@ -76,8 +76,9 @@ function blockWithDateFields($value, $arLayoutStruct) {
                 }
 
                 foreach ($v as $v2) {
-                    if($v2['type'] == 'date') { 
+                    if($v2['type'] == 'date') {
                         echo $arLayoutStruct['block_with_date_fields']['date_field_layout']($v2['lable']);
+
                     } elseif ($v2['type'] == 'text') { 
                         echo $arLayoutStruct['block_with_date_fields']['text_field_layout']($v2);
 
@@ -92,11 +93,11 @@ function blockWithDateFields($value, $arLayoutStruct) {
                     
                     echo $arLayoutStruct['block_with_date_fields']['main_input_wrap'];
 
-                    if($v2['additional_fields_buttons'] !== NULL) {
+                    if ($v2['additional_fields_buttons'] !== NULL) {
                         if (count($v2['additional_fields_buttons']) > 0){
                             echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_wrap'];
 
-                            foreach($v2['additional_fields_buttons'] as $v3){
+                            foreach ($v2['additional_fields_buttons'] as $v3) {
                                 $AddFields[] = $v3; 
                                 echo $arLayoutStruct['block_with_additional_fields']['additional_fields_buttons_layout']($v3['title']);
                             }
@@ -124,44 +125,47 @@ function blockWithDateFields($value, $arLayoutStruct) {
         <form action="">
             <?php
             foreach ($array as $key => $value) {
-                if ($value['type'] == 'main') {                    
+
+                if ($value['type'] == 'main') {
                     echo $arLayoutStruct[$value['type']]['layout_wpar'];
-                    foreach ($value['main']['cheboxes'] as $k => $v) { 
-                        echo $arLayoutStruct['main']['layout_checkbox']($v, $k); 
-                    }
-                    echo $arLayoutStruct['main']['layout_body']($value['main']['title']);
+                        foreach ($value['main']['cheboxes'] as $k => $v) { 
+                            echo $arLayoutStruct['main']['layout_checkbox']($v, $k); 
+                        }
+                        echo $arLayoutStruct['main']['layout_body']($value['main']['title']);
                     echo '</div>';
+
                 } elseif ($value['type'] == 'textarea') { 
                     echo $arLayoutStruct['textarea']['layout_body'];
-                } elseif ($value['type'] == 'toolbar') { 
-                    echo $arLayoutStruct[$value['type']]['layout_wpar'];                    
-                    foreach($value['toolbar'] as $k => $v) { 
-                        echo $arLayoutStruct['toolbar']['layout_body']($v, $k);
-                    } 
-                    echo '</div>';
+
+                } elseif ($value['type'] == 'toolbar') {
+                    echo $arLayoutStruct[$value['type']]['layout_wpar'];
+                        foreach($value['toolbar'] as $k => $v) { 
+                            echo $arLayoutStruct['toolbar']['layout_body']($v, $k);
+                        }
+                        echo '</div>';
+
                 } elseif ($value['type'] == 'block_with_additional_fields') {
 
-                    blockWithAdditionalFields($value, $arLayoutStruct);
+                    BlockWithAdditionalFields($value, $arLayoutStruct);
                     foreach ($AddFields as $r) {
                         $s[0] = $r;
-                        blockWithAdditionalFields($s, $arLayoutStruct);
+                        BlockWithAdditionalFields($s, $arLayoutStruct);
                     } 
                     $AddFields = [];
 
-                } elseif ($value['type'] == 'block_with_date_fields') { 
+                } elseif ($value['type'] == 'block_with_date_fields') {
                     echo $arLayoutStruct['block_with_date_fields']['block_with_date_fields_wrap'];
-
-                        blockWithDateFields($value, $arLayoutStruct); 
+                        BlockWithDateFields($value, $arLayoutStruct); 
                         foreach ($AddFields as $r) {
                             $s[0] = $r; 
                             echo $arLayoutStruct['block_with_date_fields']['add_date_blocks_wrap'];
-                                blockWithDateFields($s, $arLayoutStruct); 
+                                BlockWithDateFields($s, $arLayoutStruct); 
                             echo '</div>';
                         }
                         $AddFields = []; 
                     echo '</div>';
 
-                } elseif ($value['type'] == 'submit') { 
+                } elseif ($value['type'] == 'submit') {
                     echo $arLayoutStruct['submits']['layout_wpar'];
                         foreach ($value['submit'] as $k => $v){
                             if ($k == 'prime') { 
