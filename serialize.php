@@ -1,125 +1,120 @@
 <?php
 
-$arr = array (
-    array(
+$arStructur = [
+    [
         'type' => 'main',
-        'main' => array (
-        'cheboxes' => array (
-            'important' => 'Это важная задача',
-            'new' => 'Это новая задача',
-        ),
-        'title' => 'Введите название задачи',
-        )
-    ),
-    array(
+        'main' => [
+            'cheboxes' => [
+                'important' => 'Это важная задача',
+                'new' => 'Это новая задача',
+            ],
+            'title' => 'Введите название задачи',
+        ]
+    ],
+    [
         'type' => 'textarea',
-    ),
-    array (
+    ],
+    [
         'type' => 'toolbar',
-        'toolbar' => array (
+        'toolbar' => [
             'CoPilot' => 'CoPilot',
             'uploadfile' => 'Файл',
-        ),
-    ),
-
-    array (
+        ],
+    ],
+    [
         'type' => 'block_with_additional_fields',
-        'block_with_additional_fields' => array (
-            array (
-                'typical_field' => array (
+        'block_with_additional_fields' => [
+            [
+                'typical_field' => [
                     'title' => 'Отвественный',
-                    'typical_input' => array (
+                    'typical_input' => [
                         'selected' => 'Имя Фамилия',
                         'action' => 'Добавить ещё',
-                    ),
-                    'additional_fields_buttons' => array (
-                        array (
-                            'typical_field' => array (
+                    ],
+                    'additional_fields_buttons' => [
+                        [
+                            'typical_field' => [
                                 'title' => 'Постановщик',
-                                'typical_input' => array (
+                                'typical_input' => [
                                     'selected' => 'Имя Фамилия',
                                     'action' => 'Сменить',
-                                ),
-                            ),
-                        ),
-                        array (
-                            'typical_field' => array (
+                                ],
+                            ],
+                        ],
+                        [
+                            'typical_field' => [
                                 'title' => 'Соисполнитель',
-                                'typical_input' => array (
+                                'typical_input' => [
                                     'selected' => 'Имя Фамилия',
                                     'action' => '',
-                                ),
-                            ),
-                        ),
-                        
-                    )
-                )
-            ),
-            
-        )
-    ),
-
-    array (
+                                ],
+                            ],
+                        ],
+                    ]
+                ]
+            ],
+        ]
+    ],
+    [
         'type' => 'block_with_date_fields',
-        'block_with_additional_fields' => array (
-            array ( 
-                    'type' => 'date',
-                    'title' => 'Крайний срок',
-                    'lable' => '',
-                    'additional_fields_buttons' => array (
-                        array (
-                            'title' => 'Планирование сроков',
-                            array (
-                                    'type' => 'date',
-                                    'title' => '',
-                                    'lable' => 'Начать c',
-
-                            ),
-                            array (
-                                    'type' => 'text',
-                                    'title' => '',
-                                    'lable' => 'Длительсность',
-                                    'days' => 'дней',
-                                    'hours' => 'часов',
-                                    'minuts' => 'минут',
-
-                            ),
-                            array ( 
-                                    'type' => 'date',
-                                    'title' => '',
-                                    'lable' => 'Завершение',
-                            ),
-                            
-                        ),
-                        array (
-                            'title' => 'Ещё',
-                            array (
-                                'type' => 'checkbox',
-                                'title' => '',
-                                'lable' => 'Разрешить ответственному менять сроки задачи',
-                                'help' => 'Ответственный сможет изменить «планируемые даты» выполнения задачи, а также «крайний срок». Вы, как постановщик задачи, получите уведомления обо всех измененияx.'
-
-                            ),
-                            array (
-                                'type' => 'checkbox',
-                                'title' => '',
-                                'lable' => 'Пропустить выходные и праздничные дни',
-                                'help' => 'Ответственный сможет изменить «планируемые даты» выполнения задачи, а также «крайний срок». Вы, как постановщик задачи, получите уведомления обо всех измененияx.'
-
-                            ),
-                        ),
+        'block_with_additional_fields' => [
+            [ 
+                'type' => 'date',
+                'title' => 'Крайний срок',
+                'lable' => '',
+                'additional_fields_buttons' => [
+                    [
+                        'title' => 'Планирование сроков',
+                        [
+                            'type' => 'date',
+                            'title' => '',
+                            'lable' => 'Начать c',
+                        ],
+                        [
+                            'type' => 'text',
+                            'title' => '',
+                            'lable' => 'Длительсность',
+                            'days' => 'дней',
+                            'hours' => 'часов',
+                            'minuts' => 'минут',
+                        ],
+                        [
+                            'type' => 'date',
+                            'title' => '',
+                            'lable' => 'Завершение',
+                        ],
                         
-                    )
+                    ],
+                    [
+                        'title' => 'Ещё',
+                        [
+                            'type' => 'checkbox',
+                            'title' => '',
+                            'lable' => 'Разрешить ответственному менять сроки задачи',
+                            'help' => 'Ответственный сможет изменить «планируемые даты» выполнения задачи, а также «крайний срок». Вы, как постановщик задачи, получите уведомления обо всех измененияx.'
+                        ],
+                        [
+                            'type' => 'checkbox',
+                            'title' => '',
+                            'lable' => 'Пропустить выходные и праздничные дни',
+                            'help' => 'Ответственный сможет изменить «планируемые даты» выполнения задачи, а также «крайний срок». Вы, как постановщик задачи, получите уведомления обо всех измененияx.'
+                        ],
+                    ],
+                ]
+            ],
+        ]
+    ],
+    [
+        'type' => 'submit',
+        'submit' => [
+            'prime' => 'Отправить',
+            'link' => 'Отменить',
+        ],
+    ],
+];
 
-            ),
-            
-        )
-    ),
-);
-
-$serial = serialize($arr);
+$serial = serialize($arStructur);
 
 $filenameTxt = __DIR__ . '/array.txt';
  
 file_put_contents($filenameTxt, $serial);
-?>
