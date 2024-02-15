@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__."/arStructur.php");
-include_once(__DIR__."/layoutStructur.php");
+include_once(__DIR__ . "/arStructur.php");
+include_once(__DIR__ . "/layoutStructur.php");
 
 if (isset($_GET["pattern"])) {
     if ($_GET["pattern"] == 'JSON') {
@@ -22,7 +22,7 @@ function BlockWithAdditionalFields($value, $arLayoutStruct) {
 
          foreach ($value as $key => $v) { 
              if(is_array($v)) { 
-                if ($key == 0){
+                if ($key == 0) {
                     $v = $value;
                 }
 
@@ -70,13 +70,12 @@ function BlockWithDateFields($value, $arLayoutStruct) {
                 
             if ($v['title'] !== NULL) {
 
-                if(isset($v['title']))
-                {
+                if (isset($v['title'])) {
                     unset($v['title']);
                 }
 
                 foreach ($v as $v2) {
-                    if($v2['type'] == 'date') {
+                    if ($v2['type'] == 'date') {
                         echo $arLayoutStruct['block_with_date_fields']['date_field_layout']($v2['lable']);
 
                     } elseif ($v2['type'] == 'text') { 
@@ -139,7 +138,7 @@ function BlockWithDateFields($value, $arLayoutStruct) {
 
                 } elseif ($value['type'] == 'toolbar') {
                     echo $arLayoutStruct[$value['type']]['layout_wpar'];
-                        foreach($value['toolbar'] as $k => $v) { 
+                        foreach ($value['toolbar'] as $k => $v) { 
                             echo $arLayoutStruct['toolbar']['layout_body']($v, $k);
                         }
                         echo '</div>';
